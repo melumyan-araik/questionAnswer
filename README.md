@@ -1,2 +1,2 @@
 # questionAnswer
-Приложение вопрос-ответ. JS + webpack
+Приложение вопрос-ответ. JS + webpack + firebase
