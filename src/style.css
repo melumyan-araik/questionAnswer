@@ -60,3 +60,9 @@ button {
   color: #fff;
   font-style: italic;
 }
+
+.floating-btn {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}
