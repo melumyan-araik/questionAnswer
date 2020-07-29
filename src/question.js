@@ -19,9 +19,9 @@ export class Question {
   static renderList() {
     let question = getQuestionsFromLocalStorege();
     if (question.length) {
-      //   question = Question.getList();
-      console.log(question);
-      //   addToLocalStorege(question);
+      // question = Question.getList();
+      // console.log(question);
+      // addToLocalStorege(question);
     }
 
     const html = question.length
@@ -40,7 +40,7 @@ export class Question {
         method: "GET",
         body: null,
         headers: {
-          "Content-Tepe": "application/json",
+          "Content-Type": "application/json",
         },
       }
     ).then((response) => response.json());
@@ -50,6 +50,34 @@ export class Question {
       questionsArray.push({ ...questionsObj[key], id: key });
     }
     return questionsArray;
+  }
+
+  static fetch(token) {
+    if (!token) {
+      return Promise.resolve('<p class="error">У вас нет токена</p>');
+    }
+    return fetch(
+      `https://questions-answer-app.firebaseio.com/questions.json?auth=${token}`
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (response && response.error) {
+          return `<p class="error">${response.error}</p>`;
+        }
+
+        return response
+          ? Object.keys(response).map((key) => ({
+              ...response[key],
+              id: key,
+            }))
+          : [];
+      });
+  }
+
+  static listToHTML(questions) {
+    return questions.length
+      ? `<ol>${questions.map((q) => `<li>${q.text}</li>`).join("")}</ol>`
+      : `<p>Вопросов пока нет</p>`;
   }
 }
 

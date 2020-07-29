@@ -38,14 +38,29 @@ function openModal() {
   createModal("Авторизация", getAuthForm());
   document
     .getElementById("auth")
-    .addEventListener("submit", authFormHandler, { once: true });
+    .addEventListener("submit", authFormHandler, { once: false });
 }
 
 function authFormHandler(event) {
   event.preventDefault();
 
+  const btn = event.target.querySelector("#auth-submit-btn");
   const email = event.target.querySelector("#email").value;
   const password = event.target.querySelector("#password").value;
 
-  authWithEmailAndPassword(email, password);
+  btn.disabled = true;
+  authWithEmailAndPassword(email, password)
+    .then(Question.fetch)
+    .then(renderModalAfterAuth)
+    .then(() => {
+      btn.disabled = false;
+    });
+}
+
+function renderModalAfterAuth(content) {
+  if (typeof content === "string") {
+    createModal("Ошибка!", content);
+  } else {
+    createModal("Список вопросов", Question.listToHTML(content));
+  }
 }

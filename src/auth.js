@@ -10,7 +10,7 @@ export function getAuthForm() {
             <label for="password">Пароль</label>
         </div>
 
-        <button id="submit-btn" type="submit" class="mui-btn mui-btn--raised mui-btn--primary">
+        <button id="auth-submit-btn" class="mui-btn mui-btn--raised mui-btn--primary">
            Войти
         </button>
     </form>
@@ -18,7 +18,7 @@ export function getAuthForm() {
     `;
 }
 
-export function authWithEmailAndPassword(email, pas) {
+export function authWithEmailAndPassword(email, password) {
   const API_KEY = "AIzaSyCoaCAN_3Wy8p5IK8BnmcxnFXRhcd5qYl8";
   return fetch(
     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
@@ -26,14 +26,14 @@ export function authWithEmailAndPassword(email, pas) {
       method: "POST",
       body: JSON.stringify({
         email,
-        pas,
+        password,
         returnSecureToken: true,
       }),
       headers: {
-        "Content-Tepe": "application/json",
+        "Content-Type": "application/json",
       },
     }
   )
     .then((response) => response.json())
-    .then((data) => console.log(data));
+    .then((data) => data.idToken);
 }
